@@ -77,14 +77,20 @@ pipeline {
            //}
         //}  
         
-        stage('Build Image') {
+        stage('Build Image & Push to Dockerhub') {
             steps {
                 script{
                     container('docker') {
+                        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'password', usernameVariable: 'username')]) {
+                            sh 'docker version'
+                            sh 'docker build -t othom/e-commerce-frontend-blue:latest .'
+                            sh 'docker login -u ${username} -p ${password}'
+                            sh 'docker push othom/e-commerce-front-blue:latest'
+                            sh 'docker logout'
                         //reference: https://www.jenkins.io/doc/book/pipeline/jenkinsfile/
-                        img = registry + ":${env.BUILD_ID}"
+                        //img = registry + ":${env.BUILD_ID}"
                         //reference: https://docs.cloudbees.com/docs/admin-resources/latest/plugins/docker-workflow
-                        dockerImage = docker.build("${img}")
+                        //dockerImage = docker.build("${img}")
                     }
                 }
             }
