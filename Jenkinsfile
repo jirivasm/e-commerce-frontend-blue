@@ -1,12 +1,5 @@
-def img
 pipeline {
-    // setting up dockhub information needed to push image.
-    /*environment {
-        registry = "othom/e-commerce-frontend-blue"
-        registrycredential = 'dockerhub'
-        dockerimage = ''
-    }*/
-   agent {
+  agent {
     kubernetes {
       yaml '''
         apiVersion: v1
@@ -38,76 +31,84 @@ pipeline {
         '''
     }
   }
-   stages {
-        stage('Build') {
-            steps {
-                nodejs(nodeJSInstallationName: 'nodejs') {
-                   sh 'npm install -g typescript'
-                }
+  stages {  
+    stage('Build') {
+      steps {
+        nodejs(nodeJSInstallationName: 'nodejs') {
+            sh 'npm install -g typescript'
+        }
+      }
+    }
+    stage('download') {
+        steps {
+            git 'https://github.com/2206-devops-batch/e-commerce-frontend-blue.git'
+            //echo 'Finshed downloading git'
+            //force stop docker and clean up images
+            container('docker') {
+                sh "docker system prune -af"
             }
         }
-        stage('download') {
-            steps {
-                git 'https://github.com/2206-devops-batch/e-commerce-frontend-blue.git'
-                //echo 'Finshed downloading git'
-                //force stop docker and clean up images
-                container('docker') {
-                    sh "docker system prune -af"
-                }
-            }
-        }
-        //stage('SonarQube Analysis'){
-            //steps{
-                //nodejs(nodeJSInstallationName: 'nodejs'){
-                    //sh "npm install"
-                    //withSonarQubeEnv('SonarQube'){
-                        //sh "npm install -g typescript"
-                        //sh "npm install sonarqube-scanner --save -dev"
-                        //do not uncomment this sh "npm install -g sonarqube-scanner"
-                        //sh "npm run sonar"
-                    //}
-                //}
-            //}
-        //}
-        //stage("Quality Gate") {
-            //steps {
-              //timeout(time: 1, unit: 'HOURS') {
-                //waitForQualityGate abortPipeline: true
-              //}
-           //}
-        //}  
-        
-        stage('Build Image & Push to Dockerhub') {
-            steps {
-                script{
-                    container('docker') {
-                        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'password', usernameVariable: 'username')]) {
-                            sh 'docker version'
-                            sh 'docker build -t othom/e-commerce-frontend-blue:latest .'
-                            sh 'docker login -u ${username} -p ${password}'
-                            sh 'docker push othom/e-commerce-front-blue:latest'
-                            sh 'docker logout'
-                        //reference: https://www.jenkins.io/doc/book/pipeline/jenkinsfile/
-                        //img = registry + ":${env.BUILD_ID}"
-                        //reference: https://docs.cloudbees.com/docs/admin-resources/latest/plugins/docker-workflow
-                        //dockerImage = docker.build("${img}")
-                }
-            }
-        }
-
-        stage('Push To DockerHub') {
-            steps {
-                script{
-                    container('docker') {
-                        docker.withRegistry( 'https://registry.hub.docker.com ', registryCredential ) {
-                            //push image to registry
-                            dockerImage.push()
-                        }
+    }
+    // stage('Build') {
+    //   steps {
+    //     container('maven') {
+    //       //sh 'mvn package'
+    //     }
+    //   }
+    // }
+    /*stage('SonarCloud analysis') {
+        steps {       
+            script {
+                nodejs(nodeJSInstallationName: 'nodejs'){             
+                    def scannerHome = tool 'sonar scanner';             
+                    withSonarQubeEnv('SonarCloud') { 
+                        sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
-           }
+            }
         }
-
     }
-
+    stage('Quality gate') {
+        steps {
+            script {
+                if (waitForQualityGate() != 'OK') {
+                    echo 'fail quality gate'
+                }
+            }
+        }
+    }*/
+    stage('Docker Build & Push') {
+      steps {
+        container('docker') {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'password', usernameVariable: 'username')]) {
+            sh 'docker version'
+            sh 'docker build -t othom/e-commerce-frontend-blue:latest .'
+            sh 'docker login -u ${username} -p ${password}'
+            sh 'docker push othom/e-commerce-frontend-blue:latest'
+            sh 'docker logout'
+          }
+        }
+      }
+    }    
+    stage('Deploy Image to AWS EKS cluster') {
+      steps {
+        container('docker') {
+          //withKubeConfig([credentialsId: 'aws-cred']) {
+            sh 'docker run --rm --name kubectl bitnami/kubectl:latest get pod'
+            
+          //}
+        }
+        
+      }
+    }
+    
+  }
+    post {
+        always {
+          container('docker') {
+            sh 'docker logout'
+          }
+        }
+    }
+    
 }
