@@ -5,7 +5,7 @@ pipeline {
         registry = "othom/e-commerce-frontend-blue"
         registrycredential = 'dockerhub'
         dockerimage = ''
-    */}
+    }*/
    agent {
     kubernetes {
       yaml '''
