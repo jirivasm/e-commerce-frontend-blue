@@ -51,9 +51,9 @@ pipeline {
                 git 'https://github.com/2206-devops-batch/e-commerce-frontend-blue.git'
                 //echo 'Finshed downloading git'
                 //force stop docker and clean up images
-                //container('docker') {
-                    //sh "docker system prune -af"
-                //}
+                container('docker') {
+                    sh "docker system prune -af"
+                }
             }
         }
         //stage('SonarQube Analysis'){
