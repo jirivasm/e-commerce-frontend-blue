@@ -1,11 +1,11 @@
 def img
 pipeline {
     // setting up dockhub information needed to push image.
-    environment {
+    /*environment {
         registry = "othom/e-commerce-frontend-blue"
         registrycredential = 'dockerhub'
         dockerimage = ''
-    }
+    */}
    agent {
     kubernetes {
       yaml '''
