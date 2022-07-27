@@ -1,3 +1,7 @@
+#The docker image is: 
+docker run -d -p 3000:80 othom/e-commerce-frontend-blue:153
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
