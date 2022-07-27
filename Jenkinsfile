@@ -18,7 +18,7 @@ pipeline {
         }
         stage('download') {
             steps {
-                git 'https://github.com/OthomDev/test11'
+                git 'https://github.com/2206-devops-batch/e-commerce-frontend-blue.git'
                 //echo 'Finshed downloading git'
                 //force stop docker and clean up images
                 sh "docker system prune -af"
