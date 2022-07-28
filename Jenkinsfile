@@ -32,13 +32,13 @@ pipeline {
     }
   }
   stages {  
-    /*stage('Build') {
+    stage('Build') {
       steps {
         nodejs(nodeJSInstallationName: 'nodejs') {
             sh 'npm install -g typescript'
         }
       }
-    }*/
+    }
     stage('download') {
         steps {
             git 'https://github.com/2206-devops-batch/e-commerce-frontend-blue.git'
