@@ -1,7 +1,7 @@
 FROM node:18-alpine3.15 AS build-step
 WORKDIR /build
 
-RUN npm install -g
+RUN npm install
 COPY . .
 RUN npm run build
 
