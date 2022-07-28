@@ -1,8 +1,9 @@
 FROM node:18-alpine3.15 AS build-step
-WORKDIR /build
-
+EXPOSE 8080
+RUN mkdir /app
+WORKDIR /app
+COPY . /app
 RUN npm install
-COPY . .
 RUN npm run build
 
 # production environment
