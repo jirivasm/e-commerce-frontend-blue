@@ -5,7 +5,6 @@ WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json /usr/src/app/package.json
 RUN npm install -g 
-RUN npm install -g create-react-app
 COPY . /usr/src/app/
 RUN npm run build
 
