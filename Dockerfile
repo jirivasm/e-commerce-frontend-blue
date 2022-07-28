@@ -3,7 +3,7 @@ RUN mkdir -p /usr/src/app
 LABEL builder="true"
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY package*.json /usr/src/app/package.json
+COPY package*.json /usr/src/app/
 RUN npm install -g
 COPY . /usr/src/app/
 RUN npm run build
