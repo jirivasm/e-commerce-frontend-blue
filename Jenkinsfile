@@ -92,12 +92,15 @@ pipeline {
     }    
     stage('Deploy Image to AWS EKS cluster') {
       steps {
-        container('docker') {
+        container('kubectl') {
+             sh 'kubectl get pods --all-namespaces'          
+         }
+        /*container('docker') {
           //withKubeConfig([credentialsId: 'aws-cred']) {
             sh 'docker run --rm --name kubectl bitnami/kubectl:latest get pod'
             
           //}
-        }
+        }*/
         
       }
     }
