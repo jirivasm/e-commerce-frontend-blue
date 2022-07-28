@@ -1,10 +1,10 @@
-FROM node:18-alpine3.15 AS build-step
+FROM  othom/node:latest AS build-step
 RUN mkdir -p /usr/src/app
 LABEL builder="true"
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package*.json /usr/src/app/
-RUN npm ci 
+#RUN npm ci 
 COPY . /usr/src/app/
 RUN npm run build
 
