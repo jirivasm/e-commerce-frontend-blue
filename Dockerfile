@@ -1,11 +1,11 @@
 FROM  othom/node:latest AS build-step
-RUN mkdir -p /usr/src/app
+#RUN mkdir -p /usr/src/app
 LABEL builder="true"
-WORKDIR /usr/src/app
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY package*.json /usr/src/app/
+#WORKDIR /usr/src/app
+#ENV PATH /usr/src/app/node_modules/.bin:$PATH
+#COPY package*.json 
 #RUN npm ci 
-COPY . /usr/src/app/
+COPY . .
 RUN npm run build
 
 # production environment
