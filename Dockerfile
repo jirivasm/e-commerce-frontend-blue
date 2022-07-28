@@ -2,7 +2,6 @@ FROM node:18-alpine3.15 AS build-step
 WORKDIR /build
 
 RUN npm install -g
-COPY package.json package-lock.json ./
 COPY . .
 RUN npm run build
 
