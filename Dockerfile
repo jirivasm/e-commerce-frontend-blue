@@ -10,5 +10,5 @@ RUN npm run build
 
 # production environment
 FROM nginx:1.23.1-alpine AS web
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html/
+COPY --from=builder ./build /usr/share/nginx/html/
 EXPOSE 80
