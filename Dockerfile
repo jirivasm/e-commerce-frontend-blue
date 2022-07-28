@@ -1,14 +1,12 @@
-FROM node:18-alpine3.15 AS builder
-RUN mkdir -p /usr/src/app
-LABEL builder="true"
-WORKDIR /usr/src/app
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY package*.json /usr/src/app/
-RUN npm install -g
-COPY . /usr/src/app/
+FROM node:18-alpine3.15 AS build-step
+WORKDIR /build
+COPY package.json package-lock.json ./
+RUN npm install
+
+COPY . .
 RUN npm run build
 
 # production environment
 FROM nginx:1.23.1-alpine AS web
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html/
-EXPOSE 80
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build-step /build/build /frontend/build
