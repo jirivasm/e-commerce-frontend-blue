@@ -12,7 +12,7 @@ pipeline {
             - cat
             tty: true
           - name: kubectl
-            image: bitnami/kubectl
+            image: gcr.io/cloud-builders/kubectl
             command:
             - cat
             tty: true
