@@ -1,4 +1,4 @@
-FROM node:18-alpine3.15 AS builder
+FROM node:latest AS builder
 RUN mkdir -p /usr/src/app
 LABEL builder="true"
 WORKDIR /usr/src/app
