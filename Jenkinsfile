@@ -32,7 +32,7 @@ pipeline {
     }
   }
   stages {  
-    stage('Build') {
+    /*stage('Build') {
       steps {
         nodejs(nodeJSInstallationName: 'nodejs') {
             sh 'npm install -g typescript'
@@ -49,14 +49,14 @@ pipeline {
             }
         }
     }
-    // stage('Build') {
-    //   steps {
-    //     container('maven') {
-    //       //sh 'mvn package'
-    //     }
-    //   }
-    // }
-    /*stage('SonarCloud analysis') {
+    stage('Build') {
+      steps {
+        container('maven') {
+          //sh 'mvn package'
+        }
+      }
+    }*/
+    stage('SonarCloud analysis') {
         steps {       
             script {
                 nodejs(nodeJSInstallationName: 'nodejs'){             
@@ -71,13 +71,13 @@ pipeline {
     stage('Quality gate') {
         steps {
             script {
-                if (waitForQualityGate() != 'OK') {
-                    echo 'fail quality gate'
+                timeout(time: 5, unit: 'MINUTES') {
+                  waitForQualityGate abortPipeline: true
                 }
             }
         }
-    }*/
-    stage('Docker Build & Push') {
+    }
+    /*stage('Docker Build & Push') {
       steps {
         container('docker') {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'password', usernameVariable: 'username')]) {
@@ -96,23 +96,22 @@ pipeline {
              sh 'kubectl apply -f frontendbluedeployment.yaml'    
              sh 'kubectl apply -f frontendblueservice.yaml'
          }
-        /*container('docker') {
+        container('docker') {
           //withKubeConfig([credentialsId: 'aws-cred']) {
             sh 'docker run --rm --name kubectl bitnami/kubectl:latest get pod'
             
           //}
-        }*/
-        
+        }       
       }
-    }
+    }*/
     
   }
-    post {
+    /*post {
         always {
           container('docker') {
             sh 'docker logout'
           }
         }
-    }
+    }*/
     
 }
