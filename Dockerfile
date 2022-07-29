@@ -17,3 +17,6 @@ COPY --from=builder /usr/src/app/build /usr/share/nginx/html/
 # COPY --from=builder /usr/src/app/build /var/www/html/
 # RUN sed -i 's#root   /usr/share/nginx/html;#root   /var/www/html;#' /etc/nginx/conf.d/default.conf
 EXPOSE 80
+
+
+
