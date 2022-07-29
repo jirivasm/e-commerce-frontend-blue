@@ -1,14 +1,11 @@
 FROM othom/node:latest AS builder
-RUN mkdir -p /usr/src/app
 LABEL builder="true"
-WORKDIR /usr/src/app
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY package.json /usr/src/app/package.json
+#COPY package.json 
 #RUN npm install 
-COPY . /usr/src/app/
+COPY . .
 RUN npm run build
 
 # production environment
 FROM nginx:1.23.1-alpine AS web
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html/
+COPY --from=builder . /usr/share/nginx/html/
 EXPOSE 80
