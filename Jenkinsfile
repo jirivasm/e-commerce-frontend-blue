@@ -32,7 +32,7 @@ pipeline {
     }
   }
   stages {  
-    /*stage('Build') {
+    stage('Build') {
       steps {
         nodejs(nodeJSInstallationName: 'nodejs') {
             sh 'npm install -g typescript'
@@ -49,7 +49,7 @@ pipeline {
             }
         }
     }
-    stage('Build') {
+    /*stage('Build') {
       steps {
         container('maven') {
           //sh 'mvn package'
@@ -77,7 +77,7 @@ pipeline {
             }
         }
     }
-    /*stage('Docker Build & Push') {
+    stage('Docker Build & Push') {
       steps {
         container('docker') {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'password', usernameVariable: 'username')]) {
@@ -103,7 +103,7 @@ pipeline {
           //}
         }       
       }
-    }*/
+    }
     
   }
     /*post {
