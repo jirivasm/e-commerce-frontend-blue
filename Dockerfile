@@ -1,18 +1,19 @@
 FROM othom/node:latest AS builder
 RUN mkdir -p /usr/src/app
-LABEL builder="true"
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json /usr/src/app/package.json
-#RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g --silent
-COPY . /usr/src/app/
+RUN npm install --silent
+RUN npm install react-scripts@1.1.1 -g --silent
+COPY . /usr/src/app
 RUN npm run build
 
+
 # production environment
-FROM nginx:1.23.1-alpine AS web
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html/
+FROM nginx:1.13.9-alpine
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 
 
 
