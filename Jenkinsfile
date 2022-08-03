@@ -93,8 +93,9 @@ pipeline {
     stage('Deploy Image to AWS EKS cluster') {
       steps {
         container('kubectl') {
-             sh 'kubectl apply -f frontendbluedeployment.yaml'    
-             sh 'kubectl apply -f frontendblueservice.yaml'
+               sh 'kubectl get pods --all-namespaces'
+             //sh 'kubectl apply -f frontendbluedeployment.yaml'    
+             //sh 'kubectl apply -f frontendblueservice.yaml'
          }
         container('docker') {
           //withKubeConfig([credentialsId: 'aws-cred']) {
