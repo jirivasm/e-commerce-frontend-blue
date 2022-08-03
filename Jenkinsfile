@@ -97,12 +97,12 @@ pipeline {
              //sh 'kubectl apply -f frontendbluedeployment.yaml'    
              //sh 'kubectl apply -f frontendblueservice.yaml'
          }
-        container('docker') {
+        /*container('docker') {
           //withKubeConfig([credentialsId: 'aws-cred']) {
             sh 'docker run --rm --name kubectl bitnami/kubectl:latest get pod'
             
           //}
-        }       
+        }*/       
       }
     }
     
