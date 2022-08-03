@@ -6,8 +6,8 @@ pipeline {
         kind: Pod
         spec:
           containers:
-          - name: maven
-            image: maven:alpine
+          - name: node
+            image: node:18-alpine3.15
             command:
             - cat
             tty: true
@@ -32,13 +32,17 @@ pipeline {
     }
   }
   stages {  
-    stage('Build') {
+    /*stage('Build') {
       steps {
-        nodejs(nodeJSInstallationName: 'nodejs') {
-            sh 'npm install -g typescript'
+        container('node') {
+            sh 'ls -al'
+            sh 'npm install'
+        }
+        //nodejs(nodeJSInstallationName: 'nodejs') {
+            //sh 'npm install -g typescript'
         }
       }
-    }
+    }*/
     stage('download') {
         steps {
             git 'https://github.com/2206-devops-batch/e-commerce-frontend-blue.git'
@@ -49,13 +53,14 @@ pipeline {
             }
         }
     }
-    /*stage('Build') {
+    stage('Build') {
       steps {
-        container('maven') {
-          //sh 'mvn package'
+        container('node') {
+          sh 'ls -al'
+          sh 'npm install'
         }
       }
-    }*/
+    }
     /*stage('SonarCloud analysis') {
         steps {       
             script {
