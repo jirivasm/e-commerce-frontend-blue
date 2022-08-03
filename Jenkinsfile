@@ -56,7 +56,7 @@ pipeline {
         }
       }
     }*/
-    stage('SonarCloud analysis') {
+    /*stage('SonarCloud analysis') {
         steps {       
             script {
                 nodejs(nodeJSInstallationName: 'nodejs'){             
@@ -76,7 +76,7 @@ pipeline {
                 }
             }
         }
-    }
+    }*/
     stage('Docker Build & Push') {
       steps {
         container('docker') {
