@@ -5,3 +5,4 @@ services:
     container_name: "e-commerce-frontend" 
     ports:
       - "3000:3000"
+
